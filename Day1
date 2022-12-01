@@ -1,0 +1,23 @@
+<?php
+
+$raw_input = "RAW INPUT FROM https://adventofcode.com/2022/day/1/input";
+
+$data = explode("\n", $raw_input);
+$elfs = [];
+$i = 0;
+
+foreach ($data as $food) {
+    if ($currentFood = (int) $food !== 0) {
+        $totalFood = isset($elfs[$i]) ? $elfs[$i] : 0;
+        $elfs[$i] = $totalFood + $currentFood;
+
+        continue;
+    }
+
+    $i++;
+}
+
+rsort($elfs);
+
+echo "First answer: " . max($elfs);
+echo "Second answer: " . ($elfs[0] + $elfs[1] + $elfs[2]);
