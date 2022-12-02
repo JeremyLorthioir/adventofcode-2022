@@ -1,8 +1,8 @@
 <?php
 
-$raw_input = "RAW INPUT FROM https://adventofcode.com/2022/day/1/input";
+$rawInput = "RAW INPUT FROM https://adventofcode.com/2022/day/1/input";
 
-$data = explode("\n", $raw_input);
+$data = explode("\n", $rawInput);
 $elfs = [];
 $i = 0;
 
