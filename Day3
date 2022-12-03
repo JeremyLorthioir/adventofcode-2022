@@ -1,0 +1,35 @@
+<?php
+
+$rawInput = "RAW INPUT FROM https://adventofcode.com/2022/day/3/input";
+
+$rucksacks =  explode("\n", $rawInput);
+
+$total = 0;
+foreach ($rucksacks as $rucksack) {
+    $compartments1 = substr($rucksack, 0, floor(strlen($rucksack) / 2));
+    $compartments2 = substr($rucksack, floor(strlen($rucksack) / 2));
+
+    $doubles = [];
+    foreach (str_split($compartments1) as $char) {
+        if (str_contains($compartments2, $char) && !in_array($char, $doubles)) {
+            $doubles[] = $char;
+            $total += ctype_upper($char) ? ord(strtoupper($char)) - ord('A') + 27 : ord(strtoupper($char)) - ord('A') + 1;
+        }
+    }
+}
+
+echo "First answer: " . $total . "\n";
+
+$totalBadges = 0;
+foreach (array_chunk($rucksacks, 3) as $group) {
+    $found = false;
+    foreach (str_split($group[0]) as $char) {
+        if (str_contains($group[1], $char) && (str_contains($group[2], $char)) && !$found) {
+            $found = true;
+            $totalBadges += ctype_upper($char) ? ord(strtoupper($char)) - ord('A') + 27 : ord(strtoupper($char)) - ord('A') + 1;
+            continue;
+        }
+    }
+}
+
+echo "Second answer: " . $totalBadges;
