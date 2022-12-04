@@ -1,0 +1,31 @@
+<?php
+
+$rawInput = "RAW INPUT FROM https://adventofcode.com/2022/day/4/input";
+
+$data =  explode("\n", $rawInput);
+
+$totalContained = $totalOverlap = 0;
+foreach ($data as $pair) {
+    $flag = false;
+
+    $sections = explode(",", $pair);
+    $assigment1 = explode("-", $sections[0]);
+    $assigment2 = explode("-", $sections[1]);
+
+    if (($assigment1[0] <= $assigment2[0] && $assigment1[1] >= $assigment2[1])
+        || ($assigment2[0] <= $assigment1[0] && $assigment2[1] >= $assigment1[1])
+    ) {
+        $totalContained += 1;
+    }
+
+    foreach (range($assigment1[0], $assigment1[1]) as $sec) {
+        if (in_array($sec, range($assigment2[0], $assigment2[1])) && !$flag) {
+            $totalOverlap += 1;
+            $flag = true;
+        }
+    }
+}
+
+
+echo "First answer: " . $totalContained . "\n";
+echo "Second answer: " . $totalOverlap;
