@@ -1,0 +1,66 @@
+<?php
+
+$rawInput = "RAW INPUT FROM https://adventofcode.com/2022/day/5/input";
+
+$data =  explode("move", $rawInput);
+$rawCrates = $data[0];
+unset($data[0]);
+
+$instructions = $crates = [];
+foreach (explode("\n", $rawCrates) as $crateLine) {
+    for ($i = 1; $i < strlen($crateLine); $i = $i + 4) {
+        if (!isset($crates[intval($i / 4)])) {
+            $crates[intval($i / 4)] = [];
+        }
+
+        $substr = substr($crateLine, $i, 1);
+        if ($substr !== " " && !is_int($substr)) {
+            array_push($crates[intval($i / 4)], $substr);
+        }
+    }
+}
+
+$crates1 = [];
+$crates2 = [];
+foreach ($crates as $crate) {
+    $crates1[] = array_reverse($crate);
+    $crates2[] = array_reverse($crate);
+}
+
+foreach ($data as $rawInstruction) {
+    $rawInstruction = explode(" ", $rawInstruction);
+    $instructions[] = [
+        'count' => $rawInstruction[1],
+        'from' => $rawInstruction[3],
+        'to' => $rawInstruction[5],
+    ];
+}
+
+foreach ($instructions as $instruction) {
+    $buffer = [];
+    for ($i = 0; $i < $instruction['count']; $i++) {
+        // ANSWER 1
+        array_push($crates1[$instruction['to'] - 1], end($crates1[$instruction['from'] - 1]));
+        array_pop($crates1[$instruction['from'] - 1]);
+
+        // ANSWER 2
+        array_push($buffer, end($crates2[$instruction['from'] - 1]));
+        array_pop($crates2[$instruction['from'] - 1]);
+    }
+
+    foreach(array_reverse($buffer) as $buff){
+        array_push($crates2[$instruction['to'] - 1], $buff);
+    }
+}
+
+$answer1 = $answer2 = "";
+foreach ($crates1 as $crate) {
+    $answer1 .= end($crate);
+}
+
+foreach ($crates2 as $crate) {
+    $answer2 .= end($crate);
+}
+
+echo "First answer: " . $answer1 . "\n";
+echo "Second answer: " . $answer2 . "\n";
